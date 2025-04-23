@@ -6,9 +6,9 @@ Este proyecto compara el rendimiento de inserciones en bases de datos SQL (MySQL
 
 Para ejecutar este proyecto, necesitarás tener instaladas las siguientes dependencias:
 
-- Python 3.x
-- MySQL
-- MongoDB
+- [Python 3.x](https://www.python.org/downloads/)
+- [MySQL](https://dev.mysql.com/downloads/)
+- [MongoDB](https://www.mongodb.com/try/download/community)
 
 Asegúrate de tener un entorno virtual configurado e instalar las dependencias con:
 ```bash
@@ -57,17 +57,25 @@ Este script creará automáticamente la base de datos `mysql_db` y el usuario `m
    ```
    Esto arrancará el servidor de MongoDB.
 
-## Probar la Inserción en MySQL
+## Realizar las Migraciones en Django
 
 1. Asegúrate de que el entorno virtual esté activado:
    ```bash
    .\venv\Scripts\activate
+   
+2. Crea las migraciones para la base de datos:  
+   python manage.py makemigrations
 
-2. Ejecuta la shell de Django:
+3. Aplica las migraciones a la base de datos:  
+   python manage.py migrate
+
+## Probar la Inserción en MySQL (en el entorno virtual)
+
+1. Ejecuta la shell de Django:
    ```bash
    python manage.py shell
 
-3. Dentro de la shell, importa la función de prueba de SQL y ejecútala:
+2. Dentro de la shell, importa la función de prueba de SQL y ejecútala:
    ```bash
    from app.tests.test_sql import test_sql_insert
    test_sql_insert()

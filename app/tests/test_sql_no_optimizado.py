@@ -1,11 +1,10 @@
 import time
 import random
 import matplotlib.pyplot as plt
-from datetime import date
 from app.models import Cliente, Producto, Pedido, PedidoProducto
 
 
-def test_sql_insert(num=10000, repeticiones=5):
+def test_sql_insert_no_opt(num=500, repeticiones=10):
     tiempos = []
     for _ in range(repeticiones):
         Cliente.objects.all().delete()  # Limpieza
@@ -13,16 +12,15 @@ def test_sql_insert(num=10000, repeticiones=5):
         Pedido.objects.all().delete()  # Limpieza
 
         start = time.time()
-        fecha_actual = date.today()
 
         # Insertar Clientes
         clientes = [Cliente(
             nombre=f"Usuario {i}",
             email=f"user{i}@test.com",
-            fecha_registro=fecha_actual,
+            fecha_registro="2025-04-22",
             activo=True
         ) for i in range(num)]
-        clientes_creados = Cliente.objects.bulk_create(clientes)
+        Cliente.objects.bulk_create(clientes)
 
         # Insertar Productos
         productos = [Producto(
@@ -33,36 +31,26 @@ def test_sql_insert(num=10000, repeticiones=5):
             inventario=random.randint(1, 100),
             imagen="http://example.com/product.jpg"
         ) for i in range(num)]
-        productos_creados = Producto.objects.bulk_create(productos)
+        Producto.objects.bulk_create(productos)
 
         # Insertar Pedidos
-
-        pedidos = [
-                Pedido(
+        for cliente in Cliente.objects.all():
+            pedido = Pedido.objects.create(
                     cliente=cliente,
-                    fecha_pedido=fecha_actual,
+                    fecha_pedido="2025-04-22",
                     estado="pendiente"
-                ) for cliente in clientes_creados
-            ]
-        pedidos_creados = Pedido.objects.bulk_create(pedidos)
-
-        # Insertar productos en pedidos
-        pedido_productos = []
-        for pedido in pedidos_creados:
+                )
             productos_random = random.sample(
-                    productos_creados,
+                    list(Producto.objects.all()),
                     k=random.randint(1, 10)
                 )
             for producto in productos_random:
-                pedido_productos.append(PedidoProducto(
+                PedidoProducto.objects.create(
                     pedido=pedido,
                     producto=producto,
                     cantidad=random.randint(1, 5),
                     precio_unitario=producto.precio
-                ))
-
-        PedidoProducto.objects.bulk_create(pedido_productos)
-
+                )
         end = time.time()
         tiempos.append(end - start)
         print(f"Tiempo de inserción: {end - start:.2f} s")

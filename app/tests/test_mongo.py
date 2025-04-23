@@ -11,7 +11,7 @@ productos_collection = db["productos"]
 pedidos_collection = db["pedidos"]
 
 
-def test_mongo_insert(num=10000, repeticiones=5):
+def test_mongo_insert(num=300, repeticiones=5):
     print("Conectando a MongoDB...")
     tiempos = []
     for _ in range(repeticiones):
@@ -68,4 +68,4 @@ def test_mongo_insert(num=10000, repeticiones=5):
     plt.show()
 
 
-test_mongo_insert(10000, 5)
+test_mongo_insert(300, 5)

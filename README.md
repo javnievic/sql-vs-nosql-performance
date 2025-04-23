@@ -24,15 +24,15 @@ pip install -r requirements.txt
 
    Ejecuta los siguientes comandos dentro de la consola MySQL:
    ```sql
-   DROP DATABASE IF EXISTS db_mysql;
-   CREATE DATABASE db_mysql;
+   DROP DATABASE IF EXISTS mysql_db;
+   CREATE DATABASE mysql_db;
    CREATE USER 'mysql_user'@'localhost' IDENTIFIED BY 'mysql_password';
-   GRANT ALL PRIVILEGES ON db_mysql.* TO 'mysql_user'@'localhost';
+   GRANT ALL PRIVILEGES ON mysql_db.* TO 'mysql_user'@'localhost';
    FLUSH PRIVILEGES;
    EXIT;
    ```
 
-   Esto creará la base de datos `db_mysql` y el usuario `mysql_user` con la contraseña `mysql_password`.
+   Esto creará la base de datos `mysql_db` y el usuario `mysql_user` con la contraseña `mysql_password`.
 
 ## Ejecutar el Servidor de MongoDB
 

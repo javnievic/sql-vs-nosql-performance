@@ -1,10 +1,11 @@
 import time
 import random
-import matplotlib.pyplot as plt
 from app.models import Cliente, Producto, Pedido, PedidoProducto
 
 
 def test_sql_insert(num=300, repeticiones=5):
+    print(f"Prueba de inserción en SQL para {num}"
+          "clientes, productos y pedidos")
     tiempos = []
     for _ in range(repeticiones):
         Cliente.objects.all().delete()  # Limpieza
@@ -55,10 +56,4 @@ def test_sql_insert(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de inserción: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="SQL Insert")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de inserción en MySQL")
-    plt.legend()
-    plt.show()
+    return tiempos

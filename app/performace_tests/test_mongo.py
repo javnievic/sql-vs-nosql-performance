@@ -1,6 +1,5 @@
 import time
 import random
-import matplotlib.pyplot as plt
 from pymongo import MongoClient
 
 
@@ -12,7 +11,8 @@ pedidos_collection = db["pedidos"]
 
 
 def test_mongo_insert(num=300, repeticiones=5):
-    print("Conectando a MongoDB...")
+    print(f"Prueba de inserción en MongoDB para {num}"
+          "clientes, productos y pedidos")
     tiempos = []
     for _ in range(repeticiones):
         clientes_collection.delete_many({})  # Limpieza
@@ -59,13 +59,4 @@ def test_mongo_insert(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de inserción: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="Mongo Insert", color="green")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de inserción en MongoDB")
-    plt.legend()
-    plt.show()
-
-
-test_mongo_insert(300, 5)
+    return tiempos

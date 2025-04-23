@@ -76,7 +76,7 @@ WSGI_APPLICATION = 'comparativa.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'db_mysql',
+        'NAME': 'mysql_db',
         'USER': 'mysql_user',
         'PASSWORD': 'mysql_password',
         'HOST': 'localhost',

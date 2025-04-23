@@ -69,6 +69,11 @@ Este script creará automáticamente la base de datos `mysql_db` y el usuario `m
 3. Aplica las migraciones a la base de datos:  
    python manage.py migrate
 
+## Ejecutar la Comparativa (SQL vs NoSQL)
+Para realizar la comparativa completa de inserciones y visualizar los resultados en una gráfica:
+   ```bash
+   python manage.py runscript run_comparativa_insert
+   ```
 ## Probar la Inserción en MySQL (en el entorno virtual)
 
 1. Ejecuta la shell de Django:
@@ -77,7 +82,7 @@ Este script creará automáticamente la base de datos `mysql_db` y el usuario `m
 
 2. Dentro de la shell, importa la función de prueba de SQL y ejecútala:
    ```bash
-   from app.tests.test_sql import test_sql_insert
+   from app.performace_tests.test_sql import test_sql_insert
    test_sql_insert()
    ```
 
@@ -88,7 +93,7 @@ Este script creará automáticamente la base de datos `mysql_db` y el usuario `m
 1. Asegúrate de que MongoDB esté corriendo (`mongod`).
 2. Ejecuta el script de prueba para MongoDB para medir el tiempo de inserción en la base de datos NoSQL:
    ```bash
-   python app/tests/test_mongo.py
+   python app/performace_tests/test_mongo.py
 
 ## Notas
 

@@ -25,6 +25,7 @@ pip install -r requirements.txt
    Ejecuta los siguientes comandos dentro de la consola MySQL:
    ```sql
    DROP DATABASE IF EXISTS mysql_db;
+   DROP USER IF EXISTS 'mysql_user'@'localhost';
    CREATE DATABASE mysql_db;
    CREATE USER 'mysql_user'@'localhost' IDENTIFIED BY 'mysql_password';
    GRANT ALL PRIVILEGES ON mysql_db.* TO 'mysql_user'@'localhost';

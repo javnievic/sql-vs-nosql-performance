@@ -6,9 +6,9 @@ Este proyecto compara el rendimiento de inserciones en bases de datos SQL (MySQL
 
 Para ejecutar este proyecto, necesitarás tener instaladas las siguientes dependencias:
 
-- Python 3.x
-- MySQL
-- MongoDB
+- [Python 3.x](https://www.python.org/downloads/)
+- [MySQL](https://dev.mysql.com/downloads/)
+- [MongoDB](https://www.mongodb.com/try/download/community)
 
 Asegúrate de tener un entorno virtual configurado e instalar las dependencias con:
 ```bash

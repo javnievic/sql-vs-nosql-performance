@@ -15,7 +15,17 @@ Asegúrate de tener un entorno virtual configurado e instalar las dependencias c
 pip install -r requirements.txt
 ```
 ## Configuración de la Base de Datos MySQL
+Tienes dos formas de configurar la base de datos y el usuario para MySQL:
 
+### Opción A: Ejecutando el script automático
+
+En la raíz del proyecto, encontrarás el archivo `setup_comparativa.bat`. Puedes ejecutarlo directamente con doble clic, o desde la terminal con:
+```bash
+.\setup_comparativa.bat
+```
+Este script creará automáticamente la base de datos `mysql_db` y el usuario `mysql_user` con la contraseña `mysql_password`, con usuario y contraseña `root` de mysql.
+
+### Opción B: Manualmente desde MySQL
 1. **Accede a MySQL como root:**
   ```bash
    mysql -u root -p

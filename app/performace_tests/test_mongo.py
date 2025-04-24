@@ -66,9 +66,12 @@ def test_mongo_insert(num=300, repeticiones=5):
 
 def test_mongo_read_simple(num=300, repeticiones=5):
     print("Conectando a MongoDB...")
+    
+    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
+        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+    
     tiempos = []
-
-    poblar_mongo(num)
 
     for _ in range(repeticiones):
         start = time.time()
@@ -81,20 +84,17 @@ def test_mongo_read_simple(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de lectura simple: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="MongoDB Read Simple")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de lectura simple en MongoDB")
-    plt.legend()
-    plt.show()
+    return tiempos
 
 
 def test_mongo_read_filter(num=300, repeticiones=5):
     print("Conectando a MongoDB...")
+    
+    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
+        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+    
     tiempos = []
-
-    poblar_mongo(num)
 
     for _ in range(repeticiones):
         start = time.time()
@@ -107,20 +107,17 @@ def test_mongo_read_filter(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de lectura con filtro: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="MongoDB Read Filter")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de lectura con filtro en MongoDB")
-    plt.legend()
-    plt.show()
+    return tiempos
 
 
 def test_mongo_read_complex(num=300, repeticiones=5):
     print("Conectando a MongoDB...")
+    
+    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
+        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+    
     tiempos = []
-
-    poblar_mongo(num)
 
     for _ in range(repeticiones):
         start = time.time()
@@ -144,20 +141,17 @@ def test_mongo_read_complex(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de lectura compleja: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="MongoDB Read Complex")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de lectura compleja en MongoDB")
-    plt.legend()
-    plt.show()
+    return tiempos
 
 
 def test_mongo_update_single(num=300, repeticiones=5):
     print("Conectando a MongoDB...")
+    
+    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
+        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+    
     tiempos = []
-
-    poblar_mongo(num)
 
     for i in range(repeticiones):
         start = time.time()
@@ -181,20 +175,17 @@ def test_mongo_update_single(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de actualización simple: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="MongoDB Update Single")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de actualización simple en MongoDB")
-    plt.legend()
-    plt.show()
+    return tiempos
 
 
 def test_mongo_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5):
     print("Conectando a MongoDB...")
+    
+    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
+        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+    
     tiempos = []
-
-    poblar_mongo(num)
 
     for i in range(repeticiones):
         start = time.time()
@@ -221,20 +212,17 @@ def test_mongo_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5
         tiempos.append(end - start)
         print(f"Tiempo de actualización múltiple: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="MongoDB Update Multiple")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de actualización múltiple en MongoDB")
-    plt.legend()
-    plt.show()
+    return tiempos
 
 
 def test_mongo_update_complex(num=300, repeticiones=5):
     print("Conectando a MongoDB...")
+    
+    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
+        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+    
     tiempos = []
-
-    poblar_mongo(num)
 
     for i in range(repeticiones):
         start = time.time()
@@ -248,62 +236,4 @@ def test_mongo_update_complex(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de actualización compleja: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="MongoDB Update Complex")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de actualización compleja en MongoDB")
-    plt.legend()
-    plt.show()
-
-
-def poblar_mongo(num):
-    clientes_collection.delete_many({})  # Limpieza
-    productos_collection.delete_many({})  # Limpieza
-    pedidos_collection.delete_many({})  # Limpieza
-
-    # Insertar Clientes
-    clientes_docs = [{
-        "nombre": f"Usuario {i}",
-        "email": f"user{i}@test.com",
-        "fecha_registro": "2025-04-22",
-        "activo": True
-    } for i in range(num)]
-    clientes_collection.insert_many(clientes_docs)
-
-    # Insertar Productos
-    productos_docs = [{
-        "nombre": f"Producto {i}",
-        "descripcion": f"Descripción {i}",
-        "precio": random.uniform(10, 1000),
-        "categoria": "Categoria A",
-        "inventario": random.randint(1, 100),
-        "imagen": "http://example.com/product.jpg"
-    } for i in range(num)]
-    productos_collection.insert_many(productos_docs)
-
-    # Insertar Pedidos
-    for cliente in clientes_docs:
-        pedido = {
-            "cliente_id": cliente["_id"],
-            "fecha_pedido": "2025-04-22",
-            "estado": "pendiente",
-            "productos": [{
-                "producto_id": random.choice(productos_docs)["_id"],
-                "cantidad": random.randint(1, 5),
-                "precio_unitario": random.uniform(10, 1000)
-            } for _ in range(random.randint(1, 10))]
-        }
-    pedidos_collection.insert_one(pedido)
-
-
-if __name__ == "__main__":
-    import sys
-    if len(sys.argv) < 2:
-        print("Por favor indica el nombre de la función a ejecutar")
-    else:
-        func_name = sys.argv[1]
-        if func_name in globals():
-            globals()[func_name]()
-        else:
-            print(f"No se encontró la función: {func_name}")
+    return tiempos

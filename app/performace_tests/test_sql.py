@@ -62,9 +62,12 @@ def test_sql_insert(num=300, repeticiones=5):
 
 
 def test_sql_read_simple(num=300, repeticiones=5):
-    tiempos = []
+    
+    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
+        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
 
-    poblar_sql(num)
+    tiempos = []
 
     for _ in range(repeticiones):
         start = time.time()
@@ -78,19 +81,15 @@ def test_sql_read_simple(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de lectura simple: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="SQL Read Simple")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de lectura simple en MySQL")
-    plt.legend()
-    plt.show()
-
+    return tiempos
 
 def test_sql_read_filter(num=300, repeticiones=5):
-    tiempos = []
+    
+    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
+        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
 
-    poblar_sql(num)
+    tiempos = []
 
     for _ in range(repeticiones):
         start = time.time()
@@ -104,19 +103,16 @@ def test_sql_read_filter(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de lectura con filtro: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="SQL Read Filter")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de lectura con filtros en MySQL")
-    plt.legend()
-    plt.show()
+    return tiempos
 
 
 def test_sql_read_complex(num=300, repeticiones=5):
-    tiempos = []
+    
+    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
+        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
 
-    poblar_sql(num)
+    tiempos = []
 
     for _ in range(repeticiones):
         start = time.time()
@@ -135,19 +131,16 @@ def test_sql_read_complex(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de lectura compleja: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="SQL Read Complex")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de lectura compleja en MySQL")
-    plt.legend()
-    plt.show()
+    return tiempos
 
 
 def test_sql_update_single(num=300, repeticiones=5):
-    tiempos = []
+    
+    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
+        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
 
-    poblar_sql(num)
+    tiempos = []
 
     for i in range(repeticiones):
         start = time.time()
@@ -171,19 +164,16 @@ def test_sql_update_single(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de actualización simple: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="SQL Update Single")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de actualización simple en MySQL")
-    plt.legend()
-    plt.show()
+    return tiempos
 
 
 def test_sql_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5):
-    tiempos = []
+    
+    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
+        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
 
-    poblar_sql(num)
+    tiempos = []
 
     for i in range(repeticiones):
         start = time.time()
@@ -207,19 +197,16 @@ def test_sql_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5):
         tiempos.append(end - start)
         print(f"Tiempo de actualización múltiple: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="SQL Update Multiple")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de actualización múltiple en MySQL")
-    plt.legend()
-    plt.show()
+    return tiempos
 
 
 def test_sql_update_complex(num=300, repeticiones=5):
-    tiempos = []
+    
+    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
+        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
 
-    poblar_sql(num)
+    tiempos = []
 
     for i in range(repeticiones):
         start = time.time()
@@ -232,55 +219,4 @@ def test_sql_update_complex(num=300, repeticiones=5):
         tiempos.append(end - start)
         print(f"Tiempo de actualización compleja: {end - start:.2f} s")
 
-    # Mostrar gráfica
-    plt.plot(tiempos, label="SQL Update Complex")
-    plt.xlabel("Repetición")
-    plt.ylabel("Tiempo (s)")
-    plt.title("Tiempo de actualización compleja en MySQL")
-    plt.legend()
-    plt.show()
-
-
-def poblar_sql(num):
-    Cliente.objects.all().delete()  # Limpieza
-    Producto.objects.all().delete()  # Limpieza
-    Pedido.objects.all().delete()  # Limpieza
-
-    # Insertar Clientes
-    clientes = [Cliente(
-        nombre=f"Usuario {i}",
-        email=f"user{i}@test.com",
-        fecha_registro="2025-04-22",
-        activo=True
-    ) for i in range(num)]
-    Cliente.objects.bulk_create(clientes)
-
-    # Insertar Productos
-    productos = [Producto(
-        nombre=f"Producto {i}",
-        descripcion=f"Descripción {i}",
-        precio=random.uniform(10, 1000),
-        categoria="Categoria A",
-        inventario=random.randint(1, 100),
-        imagen="http://example.com/product.jpg"
-    ) for i in range(num)]
-    Producto.objects.bulk_create(productos)
-
-    # Insertar Pedidos
-    for cliente in Cliente.objects.all():
-        pedido = Pedido.objects.create(
-                cliente=cliente,
-                fecha_pedido="2025-04-22",
-                estado="pendiente"
-            )
-        productos_random = random.sample(
-                list(Producto.objects.all()),
-                k=random.randint(1, 10)
-            )
-        for producto in productos_random:
-            PedidoProducto.objects.create(
-                pedido=pedido,
-                producto=producto,
-                cantidad=random.randint(1, 5),
-                precio_unitario=producto.precio
-            )
+    return tiempos

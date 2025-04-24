@@ -1,6 +1,8 @@
+# Flake8: noqa
 import time
 import random
 from pymongo import MongoClient
+import matplotlib.pyplot as plt
 
 
 client = MongoClient("mongodb://localhost:27017/")
@@ -60,3 +62,221 @@ def test_mongo_insert(num=300, repeticiones=5):
         print(f"Tiempo de inserción: {end - start:.2f} s")
 
     return tiempos
+
+
+def test_mongo_read_simple(num=300, repeticiones=5):
+    print("Conectando a MongoDB...")
+    tiempos = []
+
+    poblar_mongo(num)
+
+    for _ in range(repeticiones):
+        start = time.time()
+
+        read_clientes = list(clientes_collection.find())
+        read_productos = list(productos_collection.find())
+        read_pedidos = list(pedidos_collection.find())
+
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de lectura simple: {end - start:.2f} s")
+
+    # Mostrar gráfica
+    plt.plot(tiempos, label="MongoDB Read Simple")
+    plt.xlabel("Repetición")
+    plt.ylabel("Tiempo (s)")
+    plt.title("Tiempo de lectura simple en MongoDB")
+    plt.legend()
+    plt.show()
+
+
+def test_mongo_read_filter(num=300, repeticiones=5):
+    print("Conectando a MongoDB...")
+    tiempos = []
+
+    poblar_mongo(num)
+
+    for _ in range(repeticiones):
+        start = time.time()
+
+        read_clientes = list(clientes_collection.find({"activo": True}))
+        read_productos = list(productos_collection.find({"precio": {"$gt": 500}}))
+        read_pedidos = list(pedidos_collection.find({"estado": "pendiente"}))
+
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de lectura con filtro: {end - start:.2f} s")
+
+    # Mostrar gráfica
+    plt.plot(tiempos, label="MongoDB Read Filter")
+    plt.xlabel("Repetición")
+    plt.ylabel("Tiempo (s)")
+    plt.title("Tiempo de lectura con filtro en MongoDB")
+    plt.legend()
+    plt.show()
+
+
+def test_mongo_read_complex(num=300, repeticiones=5):
+    print("Conectando a MongoDB...")
+    tiempos = []
+
+    poblar_mongo(num)
+
+    for _ in range(repeticiones):
+        start = time.time()
+
+        pipeline = [
+            {
+                "$lookup": {
+                    "from": "clientes",
+                    "localField": "cliente_id",
+                    "foreignField": "_id",
+                    "as": "clientes_info"
+                }
+            },
+            {
+                "$unwind": "$clientes_info"
+            }
+        ]
+        pedidos_con_clientes = list(pedidos_collection.aggregate(pipeline))
+
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de lectura compleja: {end - start:.2f} s")
+
+    # Mostrar gráfica
+    plt.plot(tiempos, label="MongoDB Read Complex")
+    plt.xlabel("Repetición")
+    plt.ylabel("Tiempo (s)")
+    plt.title("Tiempo de lectura compleja en MongoDB")
+    plt.legend()
+    plt.show()
+
+
+def test_mongo_update_single(num=300, repeticiones=5):
+    print("Conectando a MongoDB...")
+    tiempos = []
+
+    poblar_mongo(num)
+
+    for i in range(repeticiones):
+        start = time.time()
+
+        clientes_collection.update_one(
+            {"_id": random.choice(list(clientes_collection.find()))["_id"]},
+            {"$set": {"nombre": f"Usuario Actualizado {i}"}}
+        )
+
+        productos_collection.update_one(
+            {"_id": random.choice(list(productos_collection.find()))["_id"]},
+            {"$set": {"precio": 100 + i}}
+        )
+
+        pedidos_collection.update_one(
+            {"_id": random.choice(list(pedidos_collection.find()))["_id"]},
+            {"$set": {"estado": "completado"}}
+        )
+
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de actualización simple: {end - start:.2f} s")
+
+    # Mostrar gráfica
+    plt.plot(tiempos, label="MongoDB Update Single")
+    plt.xlabel("Repetición")
+    plt.ylabel("Tiempo (s)")
+    plt.title("Tiempo de actualización simple en MongoDB")
+    plt.legend()
+    plt.show()
+
+
+def test_mongo_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5):
+    print("Conectando a MongoDB...")
+    tiempos = []
+
+    poblar_mongo(num)
+
+    for i in range(repeticiones):
+        start = time.time()
+
+        for cliente in random.sample(list(clientes_collection.find()), min(numero_actualizaciones, clientes_collection.count_documents({}))):
+            clientes_collection.update_one(
+                {"_id": cliente["_id"]},
+                {"$set": {"nombre": f"Usuario Actualizado {i}"}}
+            )
+
+        for producto in random.sample(list(productos_collection.find()), min(numero_actualizaciones, productos_collection.count_documents({}))):
+            productos_collection.update_one(
+                {"_id": producto["_id"]},
+                {"$set": {"precio": 100 + i}}
+            )
+
+        for pedido in random.sample(list(pedidos_collection.find()), min(numero_actualizaciones, pedidos_collection.count_documents({}))):
+            pedidos_collection.update_one(
+                {"_id": pedido["_id"]},
+                {"$set": {"estado": "completado"}}
+            )
+
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de actualización múltiple: {end - start:.2f} s")
+
+    # Mostrar gráfica
+    plt.plot(tiempos, label="MongoDB Update Multiple")
+    plt.xlabel("Repetición")
+    plt.ylabel("Tiempo (s)")
+    plt.title("Tiempo de actualización múltiple en MongoDB")
+    plt.legend()
+    plt.show()
+
+
+def poblar_mongo(num):
+    clientes_collection.delete_many({})  # Limpieza
+    productos_collection.delete_many({})  # Limpieza
+    pedidos_collection.delete_many({})  # Limpieza
+
+    # Insertar Clientes
+    clientes_docs = [{
+        "nombre": f"Usuario {i}",
+        "email": f"user{i}@test.com",
+        "fecha_registro": "2025-04-22",
+        "activo": True
+    } for i in range(num)]
+    clientes_collection.insert_many(clientes_docs)
+
+    # Insertar Productos
+    productos_docs = [{
+        "nombre": f"Producto {i}",
+        "descripcion": f"Descripción {i}",
+        "precio": random.uniform(10, 1000),
+        "categoria": "Categoria A",
+        "inventario": random.randint(1, 100),
+        "imagen": "http://example.com/product.jpg"
+    } for i in range(num)]
+    productos_collection.insert_many(productos_docs)
+
+    # Insertar Pedidos
+    for cliente in clientes_docs:
+        pedido = {
+            "cliente_id": cliente["_id"],
+            "fecha_pedido": "2025-04-22",
+            "estado": "pendiente",
+            "productos": [{
+                "producto_id": random.choice(productos_docs)["_id"],
+                "cantidad": random.randint(1, 5),
+                "precio_unitario": random.uniform(10, 1000)
+            } for _ in range(random.randint(1, 10))]
+        }
+    pedidos_collection.insert_one(pedido)
+
+
+if __name__ == "__main__":
+    import sys
+    if len(sys.argv) < 2:
+        print("Por favor indica el nombre de la función a ejecutar")
+    else:
+        func_name = sys.argv[1]
+        if func_name in globals():
+            globals()[func_name]()
+        else:
+            print(f"No se encontró la función: {func_name}")

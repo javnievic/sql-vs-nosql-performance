@@ -230,6 +230,33 @@ def test_mongo_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5
     plt.show()
 
 
+def test_mongo_update_complex(num=300, repeticiones=5):
+    print("Conectando a MongoDB...")
+    tiempos = []
+
+    poblar_mongo(num)
+
+    for i in range(repeticiones):
+        start = time.time()
+
+        productos_collection.update_many(
+            {"inventario": {"$lt": 20}},
+            {"$set": {"precio": 10 * i}}
+        )
+
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de actualización compleja: {end - start:.2f} s")
+
+    # Mostrar gráfica
+    plt.plot(tiempos, label="MongoDB Update Complex")
+    plt.xlabel("Repetición")
+    plt.ylabel("Tiempo (s)")
+    plt.title("Tiempo de actualización compleja en MongoDB")
+    plt.legend()
+    plt.show()
+
+
 def poblar_mongo(num):
     clientes_collection.delete_many({})  # Limpieza
     productos_collection.delete_many({})  # Limpieza

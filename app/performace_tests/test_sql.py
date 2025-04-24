@@ -216,6 +216,31 @@ def test_sql_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5):
     plt.show()
 
 
+def test_sql_update_complex(num=300, repeticiones=5):
+    tiempos = []
+
+    poblar_sql(num)
+
+    for i in range(repeticiones):
+        start = time.time()
+
+        productos_menos_20 = Producto.objects.filter(precio__lt=20).update(
+            precio= 10 * i
+        )
+
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de actualización compleja: {end - start:.2f} s")
+
+    # Mostrar gráfica
+    plt.plot(tiempos, label="SQL Update Complex")
+    plt.xlabel("Repetición")
+    plt.ylabel("Tiempo (s)")
+    plt.title("Tiempo de actualización compleja en MySQL")
+    plt.legend()
+    plt.show()
+
+
 def poblar_sql(num):
     Cliente.objects.all().delete()  # Limpieza
     Producto.objects.all().delete()  # Limpieza

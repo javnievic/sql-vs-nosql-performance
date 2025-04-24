@@ -61,7 +61,7 @@ def test_sql_insert(num=300, repeticiones=5):
     return tiempos
 
 
-def test_sql_read_simple(num=300, repeticiones=5):
+def test_sql_read_simple(repeticiones=5):
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -83,7 +83,7 @@ def test_sql_read_simple(num=300, repeticiones=5):
 
     return tiempos
 
-def test_sql_read_filter(num=300, repeticiones=5):
+def test_sql_read_filter(repeticiones=5):
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -106,7 +106,7 @@ def test_sql_read_filter(num=300, repeticiones=5):
     return tiempos
 
 
-def test_sql_read_complex(num=300, repeticiones=5):
+def test_sql_read_complex(repeticiones=5):
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -134,7 +134,7 @@ def test_sql_read_complex(num=300, repeticiones=5):
     return tiempos
 
 
-def test_sql_update_single(num=300, repeticiones=5):
+def test_sql_update_single(repeticiones=5):
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -167,7 +167,7 @@ def test_sql_update_single(num=300, repeticiones=5):
     return tiempos
 
 
-def test_sql_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5):
+def test_sql_update_multiple(repeticiones=5, numero_actualizaciones=5):
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -200,7 +200,7 @@ def test_sql_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5):
     return tiempos
 
 
-def test_sql_update_complex(num=300, repeticiones=5):
+def test_sql_update_complex(repeticiones=5):
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -218,5 +218,62 @@ def test_sql_update_complex(num=300, repeticiones=5):
         end = time.time()
         tiempos.append(end - start)
         print(f"Tiempo de actualización compleja: {end - start:.2f} s")
+
+    return tiempos
+
+
+def test_sql_delete_simple(repeticiones=5):
+    
+    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
+        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+
+    tiempos = []
+
+    for i in range(repeticiones):
+        start = time.time()
+
+        cliente = Cliente.objects.first()
+        cliente.delete()
+
+        producto = Producto.objects.first()
+        producto.delete()
+
+        pedido = Pedido.objects.first()
+        pedido.delete()
+        
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de eliminación simple: {end - start:.2f} s")
+    
+    return tiempos
+
+
+def test_sql_delete_multiple(repeticiones=5, numero_eliminaciones=5):
+    
+    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
+        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+
+    tiempos = []
+
+    for i in range(repeticiones):
+        start = time.time()
+
+        clientes = Cliente.objects.all()[i*numero_eliminaciones:(i+1)*numero_eliminaciones]
+        for cliente in clientes:
+            cliente.delete()
+
+        productos = Producto.objects.all()[i*numero_eliminaciones:(i+1)*numero_eliminaciones]
+        for producto in productos:
+            producto.delete()
+
+        pedidos = Pedido.objects.all()[i*numero_eliminaciones:(i+1)*numero_eliminaciones]
+        for pedido in pedidos:
+            pedido.delete()
+
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de eliminación múltiple: {end - start:.2f} s")
 
     return tiempos

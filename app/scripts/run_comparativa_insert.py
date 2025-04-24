@@ -1,6 +1,6 @@
 # Flake8: noqa
-from app.performace_tests.test_sql import test_sql_insert, test_sql_read_simple, test_sql_read_filter, test_sql_read_complex, test_sql_update_single, test_sql_update_multiple, test_sql_update_complex
-from app.performace_tests.test_mongo import test_mongo_insert, test_mongo_read_simple, test_mongo_read_filter, test_mongo_read_complex, test_mongo_update_single, test_mongo_update_multiple, test_mongo_update_complex
+from app.performace_tests.test_sql import test_sql_insert, test_sql_read_simple, test_sql_read_filter, test_sql_read_complex, test_sql_update_single, test_sql_update_multiple, test_sql_update_complex, test_sql_delete_simple, test_sql_delete_multiple
+from app.performace_tests.test_mongo import test_mongo_insert, test_mongo_read_simple, test_mongo_read_filter, test_mongo_read_complex, test_mongo_update_single, test_mongo_update_multiple, test_mongo_update_complex, test_mongo_delete_simple, test_mongo_delete_multiple
 from app.utils.plot_utils import graficar_comparativa
 
 
@@ -12,6 +12,8 @@ def run():
     run_comparativa_update_single()
     run_comparativa_update_multiple()
     run_comparativa_update_complex()
+    run_comparativa_delete_simple()
+    run_comparativa_delete_multiple()
     
 def run_comparativa_insert():
     sql_times_insert = test_sql_insert()
@@ -65,3 +67,19 @@ def run_comparativa_update_complex():
         print("No se pudieron obtener los tiempos de actualización compleja para SQL o MongoDB.")
         return
     graficar_comparativa(sql_times_update_complex, mongo_times_update_complex, "SQL Update Complex", "MongoDB Update Complex", "Comparativa de Actualización Compleja")
+
+def run_comparativa_delete_simple():
+    sql_times_delete_simple = test_sql_delete_simple()
+    mongo_times_delete_simple = test_mongo_delete_simple()
+    if not sql_times_delete_simple or not mongo_times_delete_simple:
+        print("No se pudieron obtener los tiempos de eliminación simple para SQL o MongoDB.")
+        return
+    graficar_comparativa(sql_times_delete_simple, mongo_times_delete_simple, "SQL Delete Simple", "MongoDB Delete Simple", "Comparativa de Eliminación Simple")
+
+def run_comparativa_delete_multiple():
+    sql_times_delete_multiple = test_sql_delete_multiple()
+    mongo_times_delete_multiple = test_mongo_delete_multiple()
+    if not sql_times_delete_multiple or not mongo_times_delete_multiple:
+        print("No se pudieron obtener los tiempos de eliminación múltiple para SQL o MongoDB.")
+        return
+    graficar_comparativa(sql_times_delete_multiple, mongo_times_delete_multiple, "SQL Delete Multiple", "MongoDB Delete Multiple", "Comparativa de Eliminación Múltiple")

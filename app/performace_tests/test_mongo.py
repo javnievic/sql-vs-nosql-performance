@@ -64,7 +64,7 @@ def test_mongo_insert(num=300, repeticiones=5):
     return tiempos
 
 
-def test_mongo_read_simple(num=300, repeticiones=5):
+def test_mongo_read_simple(repeticiones=5):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -87,7 +87,7 @@ def test_mongo_read_simple(num=300, repeticiones=5):
     return tiempos
 
 
-def test_mongo_read_filter(num=300, repeticiones=5):
+def test_mongo_read_filter(repeticiones=5):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -110,7 +110,7 @@ def test_mongo_read_filter(num=300, repeticiones=5):
     return tiempos
 
 
-def test_mongo_read_complex(num=300, repeticiones=5):
+def test_mongo_read_complex(repeticiones=5):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -144,7 +144,7 @@ def test_mongo_read_complex(num=300, repeticiones=5):
     return tiempos
 
 
-def test_mongo_update_single(num=300, repeticiones=5):
+def test_mongo_update_single(repeticiones=5):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -178,7 +178,7 @@ def test_mongo_update_single(num=300, repeticiones=5):
     return tiempos
 
 
-def test_mongo_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5):
+def test_mongo_update_multiple(repeticiones=5, numero_actualizaciones=5):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -215,7 +215,7 @@ def test_mongo_update_multiple(num=300, repeticiones=5, numero_actualizaciones=5
     return tiempos
 
 
-def test_mongo_update_complex(num=300, repeticiones=5):
+def test_mongo_update_complex(repeticiones=5):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -235,5 +235,61 @@ def test_mongo_update_complex(num=300, repeticiones=5):
         end = time.time()
         tiempos.append(end - start)
         print(f"Tiempo de actualización compleja: {end - start:.2f} s")
+
+    return tiempos
+
+
+def test_mongo_delete_simple(repeticiones=5):
+    print("Conectando a MongoDB...")
+    
+    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
+        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+    
+    tiempos = []
+
+    for i in range(repeticiones):
+        start = time.time()
+
+        first_cliente = clientes_collection.find_one()
+        clientes_collection.delete_one({"_id": first_cliente["_id"]})
+
+        first_producto = productos_collection.find_one()
+        productos_collection.delete_one({"_id": first_producto["_id"]})
+
+        first_pedido = pedidos_collection.find_one()
+        pedidos_collection.delete_one({"_id": first_pedido["_id"]})
+
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de eliminación simple: {end - start:.2f} s")
+
+    return tiempos
+
+
+def test_mongo_delete_multiple(repeticiones=5, numero_eliminaciones=5):
+    print("Conectando a MongoDB...")
+    
+    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
+        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+    
+    tiempos = []
+
+    for i in range(repeticiones):
+        start = time.time()
+
+        for cliente in random.sample(list(clientes_collection.find()), min(numero_eliminaciones, clientes_collection.count_documents({}))):
+            clientes_collection.delete_one({"_id": cliente["_id"]})
+
+        for producto in random.sample(list(productos_collection.find()), min(numero_eliminaciones, productos_collection.count_documents({}))):
+            productos_collection.delete_one({"_id": producto["_id"]})
+
+        for pedido in random.sample(list(pedidos_collection.find()), min(numero_eliminaciones, pedidos_collection.count_documents({}))):
+            pedidos_collection.delete_one({"_id": pedido["_id"]})
+
+        end = time.time()
+        tiempos.append(end - start)
+        print(f"Tiempo de eliminación múltiple: {end - start:.2f} s")
 
     return tiempos

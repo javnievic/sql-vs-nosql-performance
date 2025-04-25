@@ -13,7 +13,7 @@ pedidos_collection = db["pedidos"]
 
 def test_mongo_insert(num=10000, repeticiones=5):
     print(f"Prueba de inserción en MongoDB para {num} "
-          "clientes, productos y pedidos")
+          "clientes, productos y pedidos en {repeticiones} repeticiones\n")
     tiempos = []
     for _ in range(repeticiones):
         clientes_collection.delete_many({})  # Limpieza
@@ -64,7 +64,7 @@ def test_mongo_insert(num=10000, repeticiones=5):
 
 
 def test_mongo_read_simple(repeticiones=20):
-    print("Conectando a MongoDB...")
+    print(f"Prueba de lectura simple en MongoDB para {repeticiones} repeticiones\n")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
         print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -87,7 +87,7 @@ def test_mongo_read_simple(repeticiones=20):
 
 
 def test_mongo_read_filter(repeticiones=20):
-    print("Conectando a MongoDB...")
+    print(f"Prueba de lectura con filtro en MongoDB para {repeticiones} repeticiones\n")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
         print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -110,7 +110,7 @@ def test_mongo_read_filter(repeticiones=20):
 
 
 def test_mongo_read_complex(repeticiones=20):
-    print("Conectando a MongoDB...")
+    print(f"Prueba de lectura compleja en MongoDB para {repeticiones} repeticiones\n")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
         print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -144,7 +144,8 @@ def test_mongo_read_complex(repeticiones=20):
 
 
 def test_mongo_update_multiple(repeticiones=20, numero_actualizaciones=5):
-    print("Conectando a MongoDB...")
+    print(f"Prueba de actualización múltiple en MongoDB para {repeticiones} repeticiones " 
+          f"y {numero_actualizaciones} actualizaciones por repetición\n")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
         print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -181,7 +182,7 @@ def test_mongo_update_multiple(repeticiones=20, numero_actualizaciones=5):
 
 
 def test_mongo_update_complex(repeticiones=20):
-    print("Conectando a MongoDB...")
+    print(f"Prueba de actualización compleja en MongoDB para {repeticiones} repeticiones\n")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
         print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -205,7 +206,8 @@ def test_mongo_update_complex(repeticiones=20):
 
 
 def test_mongo_delete_multiple(repeticiones=20, numero_eliminaciones=5):
-    print("Conectando a MongoDB...")
+    print(f"Prueba de eliminación múltiple en MongoDB para {repeticiones} repeticiones "
+          f"y {numero_eliminaciones} eliminaciones por repetición\n")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
         print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -233,7 +235,7 @@ def test_mongo_delete_multiple(repeticiones=20, numero_eliminaciones=5):
 
 
 def test_mongo_delete_all():
-    print("Conectando a MongoDB...")
+    print(f"Prueba de eliminación total en MongoDB\n")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
         print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")

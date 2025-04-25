@@ -6,7 +6,7 @@ from datetime import date
 
 def test_sql_insert(num=10000, repeticiones=5):
     print(f"Prueba de inserción en MySQL para {num} "
-        "clientes, productos y pedidos")
+        f"clientes, productos y pedidos en {repeticiones} repeticiones\n")
     tiempos = []
     for _ in range(repeticiones):
         Cliente.objects.all().delete()  # Limpieza
@@ -71,6 +71,7 @@ def test_sql_insert(num=10000, repeticiones=5):
     return tiempos
 
 def test_sql_read_simple(repeticiones=20):
+    print(f"Prueba de lectura simple en MySQL para {repeticiones} repeticiones\n")
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -93,6 +94,7 @@ def test_sql_read_simple(repeticiones=20):
     return tiempos
 
 def test_sql_read_filter(repeticiones=20):
+    print(f"Prueba de lectura con filtro en MySQL para {repeticiones} repeticiones\n")
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -116,6 +118,7 @@ def test_sql_read_filter(repeticiones=20):
 
 
 def test_sql_read_complex(repeticiones=20):
+    print(f"Prueba de lectura compleja en MySQL para {repeticiones} repeticiones\n")
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -144,7 +147,9 @@ def test_sql_read_complex(repeticiones=20):
 
 
 def test_sql_update_multiple(repeticiones=20, numero_actualizaciones=5):
-    
+    print(f"Prueba de actualización múltiple en MySQL para {repeticiones} repeticiones "
+          f"y {numero_actualizaciones} actualizaciones por repetición\n")
+
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
         return
@@ -176,6 +181,7 @@ def test_sql_update_multiple(repeticiones=20, numero_actualizaciones=5):
     return tiempos
 
 def test_sql_update_complex(repeticiones=20):
+    print(f"Prueba de actualización compleja en MySQL para {repeticiones} repeticiones\n")
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -197,6 +203,8 @@ def test_sql_update_complex(repeticiones=20):
     return tiempos
 
 def test_sql_delete_multiple(repeticiones=20, numero_eliminaciones=5):
+    print(f"Prueba de eliminación múltiple en MySQL para {repeticiones} repeticiones "
+          f"y {numero_eliminaciones} eliminaciones por repetición\n")
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
@@ -227,6 +235,7 @@ def test_sql_delete_multiple(repeticiones=20, numero_eliminaciones=5):
 
 
 def test_sql_delete_all():
+    print("Prueba de eliminación total en MySQL \n")
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
         print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")

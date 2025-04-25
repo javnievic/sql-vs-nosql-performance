@@ -3,6 +3,29 @@ import argparse
 import os
 import django
 import sys
+import psutil
+import time
+
+def medir_cpu(func, *args, **kwargs):
+    proceso = psutil.Process(os.getpid())
+    cpu_inicio = proceso.cpu_percent(interval=None)
+    tiempo_inicio = time.time()
+    uso_cpu_total = []
+    tiempos_total = func(*args, **kwargs)
+    
+    tiempo_fin = time.time()
+    cpu_fin = proceso.cpu_percent(interval=None)
+
+    uso_cpu = cpu_fin - cpu_inicio
+    duracion = tiempo_fin - tiempo_inicio
+    
+    print(f"Uso de CPU estimado: {uso_cpu:.2f}%")
+
+    uso_cpu_total.append(uso_cpu)
+
+    return uso_cpu_total, tiempos_total
+
+
 
 # Configura el entorno de Django
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -26,7 +49,8 @@ from app.performace_tests.test_mongo import (
 )
 from app.utils.plot_utils import (
     graficar_comparativa,
-    grafica_barras_comparativa_sin_iteraciones
+    grafica_barras_comparativa_sin_iteraciones,
+    graficar_cpu
 )
 from app.models import Cliente, Producto, Pedido
 
@@ -64,63 +88,72 @@ def main():
         if args.test == "insert":
             args.num = 10000  # Valor por defecto para insert
         else:
-            args.num = 600  # Valor por defecto para actualizaciones y eliminaciones
+            args.num = 100  # Valor por defecto para actualizaciones y eliminaciones
 
     test = args.test
 
     if test == "insert":
-        sql_times = test_sql_insert(num=args.num, repeticiones=args.repeticiones)
-        mongo_times = test_mongo_insert(num=args.num, repeticiones=args.repeticiones)
-        graficar_comparativa(sql_times, mongo_times, "MySQL Insert", "MongoDB Insert", "Comparativa de Inserción")
+        sql_cpu, sql_times = medir_cpu(test_sql_insert, repeticiones=args.repeticiones, num=args.num)
+        mongo_cpu, mongo_times = medir_cpu(test_mongo_insert, repeticiones=args.repeticiones, num=args.num)
 
-    elif test == "delete_all":
-        if verificar_datos_mysql():
-            return
-        sql_times = test_sql_delete_all()
-        mongo_times = test_mongo_delete_all()
-        grafica_barras_comparativa_sin_iteraciones(sql_times, mongo_times, "MySQL Delete All", "MongoDB Delete All", "Comparativa de Eliminación Total")
-
-    elif test == "delete_multiple":
-        if verificar_datos_mysql():
-            return
-        sql_times = test_sql_delete_multiple(repeticiones=args.repeticiones)
-        mongo_times = test_mongo_delete_multiple(repeticiones=args.repeticiones)
-        graficar_comparativa(sql_times, mongo_times, "MySQL Delete Multiple", "MongoDB Delete Multiple", "Comparativa de Eliminación Múltiple")
+        graficar_comparativa(sql_times, mongo_times, "MySQL Insert", "MongoDB Insert", "Comparativa de Inserción (Tiempo)")
+        graficar_cpu(sql_cpu, mongo_cpu, "MySQL Insert", "MongoDB Insert", "Comparativa de Inserción (Uso de CPU)")
 
     elif test == "read_simple":
         if verificar_datos_mysql():
             return
-        sql_times = test_sql_read_simple(repeticiones=args.repeticiones)
-        mongo_times = test_mongo_read_simple(repeticiones=args.repeticiones)
+        sql_cpu, sql_times = medir_cpu(test_sql_read_simple, repeticiones=args.repeticiones)
+        mongo_cpu, mongo_times = medir_cpu(test_mongo_read_simple, repeticiones=args.repeticiones)
         graficar_comparativa(sql_times, mongo_times, "MySQL Read Simple", "MongoDB Read Simple", "Comparativa de Lectura Simple")
+        graficar_cpu(sql_cpu, mongo_cpu, "MySQL Read Simple", "MongoDB Read Simple", "Comparativa de Lectura Simple (Uso de CPU)")
 
     elif test == "read_filter":
         if verificar_datos_mysql():
             return
-        sql_times = test_sql_read_filter(repeticiones=args.repeticiones)
-        mongo_times = test_mongo_read_filter(repeticiones=args.repeticiones)
+        sql_cpu, sql_times = medir_cpu(test_sql_read_filter, repeticiones=args.repeticiones)
+        mongo_cpu, mongo_times = medir_cpu(test_mongo_read_filter, repeticiones=args.repeticiones)
         graficar_comparativa(sql_times, mongo_times, "MySQL Read Filter", "MongoDB Read Filter", "Comparativa de Lectura con Filtros")
+        graficar_cpu(sql_cpu, mongo_cpu, "MySQL Read Filter", "MongoDB Read Filter", "Comparativa de Lectura con Filtros (Uso de CPU)")
 
     elif test == "read_complex":
         if verificar_datos_mysql():
             return
-        sql_times = test_sql_read_complex(repeticiones=args.repeticiones)
-        mongo_times = test_mongo_read_complex(repeticiones=args.repeticiones)
+        sql_cpu, sql_times = medir_cpu(test_sql_read_complex, repeticiones=args.repeticiones)
+        mongo_cpu, mongo_times = medir_cpu(test_mongo_read_complex, repeticiones=args.repeticiones)
         graficar_comparativa(sql_times, mongo_times, "MySQL Read Complex", "MongoDB Read Complex", "Comparativa de Lectura Compleja")
+        graficar_cpu(sql_cpu, mongo_cpu, "MySQL Read Complex", "MongoDB Read Complex", "Comparativa de Lectura Compleja (Uso de CPU)")
 
     elif test == "update_multiple":
         if verificar_datos_mysql():
             return
-        sql_times = test_sql_update_multiple(repeticiones=args.repeticiones, numero_actualizaciones=args.num)
-        mongo_times = test_mongo_update_multiple(repeticiones=args.repeticiones, numero_actualizaciones=args.num)
+        sql_cpu, sql_times = medir_cpu(test_sql_update_multiple, repeticiones=args.repeticiones, numero_actualizaciones=args.num)
+        mongo_cpu, mongo_times = medir_cpu(test_mongo_update_multiple, repeticiones=args.repeticiones, numero_actualizaciones=args.num)
         graficar_comparativa(sql_times, mongo_times, "MySQL Update Multiple", "MongoDB Update Multiple", "Comparativa de Actualización Múltiple")
+        graficar_cpu(sql_cpu, mongo_cpu, "MySQL Update Multiple", "MongoDB Update Multiple", "Comparativa de Actualización Múltiple (Uso de CPU)")
 
     elif test == "update_complex":
         if verificar_datos_mysql():
             return
-        sql_times = test_sql_update_complex(repeticiones=args.repeticiones)
-        mongo_times = test_mongo_update_complex(repeticiones=args.repeticiones)
+        sql_cpu, sql_times = medir_cpu(test_sql_update_complex, repeticiones=args.repeticiones)
+        mongo_cpu, mongo_times = medir_cpu(test_mongo_update_complex, repeticiones=args.repeticiones)
         graficar_comparativa(sql_times, mongo_times, "MySQL Update Complex", "MongoDB Update Complex", "Comparativa de Actualización Compleja")
+        graficar_cpu(sql_cpu, mongo_cpu, "MySQL Update Complex", "MongoDB Update Complex", "Comparativa de Actualización Compleja (Uso de CPU)")
+
+    elif test == "delete_multiple":
+        if verificar_datos_mysql():
+            return
+        sql_cpu, sql_times = medir_cpu(test_sql_delete_multiple, repeticiones=args.repeticiones, numero_eliminaciones=args.num)
+        mongo_cpu, mongo_times = medir_cpu(test_mongo_delete_multiple, repeticiones=args.repeticiones, numero_eliminaciones=args.num)
+        graficar_comparativa(sql_times, mongo_times, "MySQL Delete Multiple", "MongoDB Delete Multiple", "Comparativa de Eliminación Múltiple")
+        graficar_cpu(sql_cpu, mongo_cpu, "MySQL Delete Multiple", "MongoDB Delete Multiple", "Comparativa de Eliminación Múltiple (Uso de CPU)")
+
+    elif test == "delete_all":
+        if verificar_datos_mysql():
+            return
+        sql_cpu, sql_times = medir_cpu(test_sql_delete_all)
+        mongo_cpu, mongo_times = medir_cpu(test_mongo_delete_all)
+        grafica_barras_comparativa_sin_iteraciones(sql_times, mongo_times, "MySQL Delete All", "MongoDB Delete All", "Comparativa de Eliminación Total")
+        graficar_cpu(sql_cpu, mongo_cpu, "MySQL Delete All", "MongoDB Delete All", "Comparativa de Eliminación Total (Uso de CPU)")
 
     else:
         print("Test no reconocido.")

@@ -25,3 +25,7 @@ def grafica_barras_comparativa_sin_iteraciones(tiempo_sql, tiempo_mongo, sql_lab
     plt.grid(True)
     plt.tight_layout()
     plt.show()
+
+def graficar_cpu(sql_cpu, mongo_cpu, sql_label, mongo_label, title):
+    grafica_barras_comparativa_sin_iteraciones(sql_cpu, mongo_cpu, sql_label, mongo_label, title)
+

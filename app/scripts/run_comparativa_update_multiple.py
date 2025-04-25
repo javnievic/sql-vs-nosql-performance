@@ -8,6 +8,6 @@ def run():
     sql_times_update_multiple = test_sql_update_multiple()
     mongo_times_update_multiple = test_mongo_update_multiple()
     if not sql_times_update_multiple or not mongo_times_update_multiple:
-        print("No se pudieron obtener los tiempos de actualización múltiple para SQL o MongoDB.")
+        print("No se pudieron obtener los tiempos de actualización múltiple para MySQL o MongoDB.")
         return
-    graficar_comparativa(sql_times_update_multiple, mongo_times_update_multiple, "SQL Update Multiple", "MongoDB Update Multiple", "Comparativa de Actualización Múltiple")
+    graficar_comparativa(sql_times_update_multiple, mongo_times_update_multiple, "MySQL Update Multiple", "MongoDB Update Multiple", "Comparativa de Actualización Múltiple")

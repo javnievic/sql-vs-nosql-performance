@@ -8,6 +8,6 @@ def run():
     sql_times_read_filter = test_sql_read_filter()
     mongo_times_read_filter = test_mongo_read_filter()
     if not sql_times_read_filter or not mongo_times_read_filter:
-        print("No se pudieron obtener los tiempos de lectura con filtros para SQL o MongoDB.")
+        print("No se pudieron obtener los tiempos de lectura con filtros para MySQL o MongoDB.")
         return
-    graficar_comparativa(sql_times_read_filter, mongo_times_read_filter, "SQL Read Filter", "MongoDB Read Filter", "Comparativa de Lectura con Filtros")
+    graficar_comparativa(sql_times_read_filter, mongo_times_read_filter, "MySQL Read Filter", "MongoDB Read Filter", "Comparativa de Lectura con Filtros")

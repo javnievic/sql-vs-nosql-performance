@@ -11,7 +11,7 @@ productos_collection = db["productos"]
 pedidos_collection = db["pedidos"]
 
 
-def test_mongo_insert(num=300, repeticiones=5):
+def test_mongo_insert(num=10000, repeticiones=5):
     print(f"Prueba de inserción en MongoDB para {num} "
           "clientes, productos y pedidos")
     tiempos = []
@@ -63,7 +63,7 @@ def test_mongo_insert(num=300, repeticiones=5):
     return tiempos
 
 
-def test_mongo_read_simple(repeticiones=5):
+def test_mongo_read_simple(repeticiones=20):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -86,7 +86,7 @@ def test_mongo_read_simple(repeticiones=5):
     return tiempos
 
 
-def test_mongo_read_filter(repeticiones=5):
+def test_mongo_read_filter(repeticiones=20):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -109,7 +109,7 @@ def test_mongo_read_filter(repeticiones=5):
     return tiempos
 
 
-def test_mongo_read_complex(repeticiones=5):
+def test_mongo_read_complex(repeticiones=20):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -143,7 +143,7 @@ def test_mongo_read_complex(repeticiones=5):
     return tiempos
 
 
-def test_mongo_update_single(repeticiones=5):
+def test_mongo_update_single(repeticiones=20):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -177,7 +177,7 @@ def test_mongo_update_single(repeticiones=5):
     return tiempos
 
 
-def test_mongo_update_multiple(repeticiones=5, numero_actualizaciones=5):
+def test_mongo_update_multiple(repeticiones=20, numero_actualizaciones=5):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -214,7 +214,7 @@ def test_mongo_update_multiple(repeticiones=5, numero_actualizaciones=5):
     return tiempos
 
 
-def test_mongo_update_complex(repeticiones=5):
+def test_mongo_update_complex(repeticiones=20):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -238,7 +238,7 @@ def test_mongo_update_complex(repeticiones=5):
     return tiempos
 
 
-def test_mongo_delete_simple(repeticiones=5):
+def test_mongo_delete_simple(repeticiones=20):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
@@ -266,7 +266,7 @@ def test_mongo_delete_simple(repeticiones=5):
     return tiempos
 
 
-def test_mongo_delete_multiple(repeticiones=5, numero_eliminaciones=5):
+def test_mongo_delete_multiple(repeticiones=20, numero_eliminaciones=5):
     print("Conectando a MongoDB...")
     
     if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:

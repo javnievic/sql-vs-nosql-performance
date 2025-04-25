@@ -8,6 +8,6 @@ def run():
     sql_times_delete_all = test_sql_delete_all()
     mongo_times_delete_all = test_mongo_delete_all()
     if not sql_times_delete_all or not mongo_times_delete_all:
-        print("No se pudieron obtener los tiempos de eliminación total para SQL o MongoDB.")
+        print("No se pudieron obtener los tiempos de eliminación total para MySQL o MongoDB.")
         return
-    grafica_barras_comparativa_sin_iteraciones(sql_times_delete_all, mongo_times_delete_all, "SQL Delete All", "MongoDB Delete All", "Comparativa de Eliminación Total")
+    grafica_barras_comparativa_sin_iteraciones(sql_times_delete_all, mongo_times_delete_all, "MySQL Delete All", "MongoDB Delete All", "Comparativa de Eliminación Total")

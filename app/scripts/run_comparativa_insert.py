@@ -7,4 +7,4 @@ from app.utils.plot_utils import graficar_comparativa
 def run():
     sql_times_insert = test_sql_insert()
     mongo_times_insert = test_mongo_insert()
-    graficar_comparativa(sql_times_insert, mongo_times_insert, "SQL Insert", "MongoDB Insert", "Comparativa de Inserción")
+    graficar_comparativa(sql_times_insert, mongo_times_insert, "MySQL Insert", "MongoDB Insert", "Comparativa de Inserción")

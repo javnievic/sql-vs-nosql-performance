@@ -8,6 +8,6 @@ def run():
     sql_times_delete_multiple = test_sql_delete_multiple()
     mongo_times_delete_multiple = test_mongo_delete_multiple()
     if not sql_times_delete_multiple or not mongo_times_delete_multiple:
-        print("No se pudieron obtener los tiempos de eliminación múltiple para SQL o MongoDB.")
+        print("No se pudieron obtener los tiempos de eliminación múltiple para MySQL o MongoDB.")
         return
-    graficar_comparativa(sql_times_delete_multiple, mongo_times_delete_multiple, "SQL Delete Multiple", "MongoDB Delete Multiple", "Comparativa de Eliminación Múltiple")
+    graficar_comparativa(sql_times_delete_multiple, mongo_times_delete_multiple, "MySQL Delete Multiple", "MongoDB Delete Multiple", "Comparativa de Eliminación Múltiple")

@@ -8,6 +8,6 @@ def run():
     sql_times_update_complex = test_sql_update_complex()
     mongo_times_update_complex = test_mongo_update_complex()
     if not sql_times_update_complex or not mongo_times_update_complex:
-        print("No se pudieron obtener los tiempos de actualización compleja para SQL o MongoDB.")
+        print("No se pudieron obtener los tiempos de actualización compleja para MySQL o MongoDB.")
         return
-    graficar_comparativa(sql_times_update_complex, mongo_times_update_complex, "SQL Update Complex", "MongoDB Update Complex", "Comparativa de Actualización Compleja")
+    graficar_comparativa(sql_times_update_complex, mongo_times_update_complex, "MySQL Update Complex", "MongoDB Update Complex", "Comparativa de Actualización Compleja")

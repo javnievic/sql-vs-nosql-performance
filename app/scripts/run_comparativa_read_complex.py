@@ -8,6 +8,6 @@ def run():
     sql_times_read_complex = test_sql_read_complex()
     mongo_times_read_complex = test_mongo_read_complex()
     if not sql_times_read_complex or not mongo_times_read_complex:
-        print("No se pudieron obtener los tiempos de lectura compleja para SQL o MongoDB.")
+        print("No se pudieron obtener los tiempos de lectura compleja para MySQL o MongoDB.")
         return
-    graficar_comparativa(sql_times_read_complex, mongo_times_read_complex, "SQL Read Complex", "MongoDB Read Complex", "Comparativa de Lectura Compleja")
+    graficar_comparativa(sql_times_read_complex, mongo_times_read_complex, "MySQL Read Complex", "MongoDB Read Complex", "Comparativa de Lectura Compleja")

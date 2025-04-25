@@ -13,7 +13,7 @@ pedidos_collection = db["pedidos"]
 
 def test_mongo_insert(num=10000, repeticiones=5):
     print(f"Prueba de inserción en MongoDB para {num} "
-          "clientes, productos y pedidos en {repeticiones} repeticiones\n")
+          f"clientes, productos y pedidos en {repeticiones} repeticiones\n")
     tiempos = []
     for _ in range(repeticiones):
         clientes_collection.delete_many({})  # Limpieza

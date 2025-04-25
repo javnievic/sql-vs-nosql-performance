@@ -6,27 +6,6 @@ import sys
 import psutil
 import time
 
-def medir_cpu(func, *args, **kwargs):
-    proceso = psutil.Process(os.getpid())
-    cpu_inicio = proceso.cpu_percent(interval=None)
-    tiempo_inicio = time.time()
-    uso_cpu_total = []
-    tiempos_total = func(*args, **kwargs)
-    
-    tiempo_fin = time.time()
-    cpu_fin = proceso.cpu_percent(interval=None)
-
-    uso_cpu = cpu_fin - cpu_inicio
-    duracion = tiempo_fin - tiempo_inicio
-    
-    print(f"Uso de CPU estimado: {uso_cpu:.2f}%")
-
-    uso_cpu_total.append(uso_cpu)
-
-    return uso_cpu_total, tiempos_total
-
-
-
 # Configura el entorno de Django
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
@@ -53,6 +32,22 @@ from app.utils.plot_utils import (
     graficar_cpu
 )
 from app.models import Cliente, Producto, Pedido
+
+
+def medir_cpu(func, *args, **kwargs):
+    proceso = psutil.Process(os.getpid())
+    cpu_inicio = proceso.cpu_percent(interval=None)
+
+    tiempos_total = func(*args, **kwargs)
+    
+    cpu_fin = proceso.cpu_percent(interval=None)
+
+    uso_cpu = cpu_fin - cpu_inicio
+    
+    print(f"Uso de CPU estimado: {uso_cpu:.2f}%")
+
+    
+    return uso_cpu, tiempos_total
 
 def verificar_datos_mysql():
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():

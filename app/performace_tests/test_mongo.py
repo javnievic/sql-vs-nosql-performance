@@ -2,7 +2,6 @@
 import time
 import random
 from pymongo import MongoClient
-import matplotlib.pyplot as plt
 
 
 client = MongoClient("mongodb://localhost:27017/")
@@ -13,7 +12,7 @@ pedidos_collection = db["pedidos"]
 
 
 def test_mongo_insert(num=300, repeticiones=5):
-    print(f"Prueba de inserción en MongoDB para {num}"
+    print(f"Prueba de inserción en MongoDB para {num} "
           "clientes, productos y pedidos")
     tiempos = []
     for _ in range(repeticiones):
@@ -293,3 +292,22 @@ def test_mongo_delete_multiple(repeticiones=5, numero_eliminaciones=5):
         print(f"Tiempo de eliminación múltiple: {end - start:.2f} s")
 
     return tiempos
+
+
+def test_mongo_delete_all():
+    print("Conectando a MongoDB...")
+    
+    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
+        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+    
+    start = time.time()
+
+    clientes_collection.delete_many({})
+    productos_collection.delete_many({})
+    pedidos_collection.delete_many({})
+
+    end = time.time()
+    print(f"Tiempo de eliminación total: {end - start:.2f} s")
+
+    return end - start

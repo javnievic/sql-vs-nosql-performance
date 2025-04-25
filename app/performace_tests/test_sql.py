@@ -2,11 +2,10 @@
 import time
 import random
 from app.models import Cliente, Producto, Pedido, PedidoProducto
-import matplotlib.pyplot as plt
 
 
 def test_sql_insert(num=300, repeticiones=5):
-    print(f"Prueba de inserción en SQL para {num}"
+    print(f"Prueba de inserción en SQL para {num} "
           "clientes, productos y pedidos")
     tiempos = []
     for _ in range(repeticiones):
@@ -277,3 +276,21 @@ def test_sql_delete_multiple(repeticiones=5, numero_eliminaciones=5):
         print(f"Tiempo de eliminación múltiple: {end - start:.2f} s")
 
     return tiempos
+
+
+def test_sql_delete_all():
+    
+    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
+        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
+        return
+
+    start = time.time()
+
+    Cliente.objects.all().delete()
+    Producto.objects.all().delete()
+    Pedido.objects.all().delete()
+
+    end = time.time()
+    print(f"Tiempo de eliminación total: {end - start:.2f} s")
+
+    return end - start

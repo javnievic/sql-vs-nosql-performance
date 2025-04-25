@@ -17,12 +17,12 @@ django.setup()
 from app.performace_tests.test_sql import (
     test_sql_insert, test_sql_delete_multiple, test_sql_delete_all,
     test_sql_read_simple, test_sql_read_filter, test_sql_read_complex,
-    test_sql_update_single, test_sql_update_multiple, test_sql_update_complex
+    test_sql_update_multiple, test_sql_update_complex
 )
 from app.performace_tests.test_mongo import (
     test_mongo_insert, test_mongo_delete_multiple, test_mongo_delete_all,
     test_mongo_read_simple, test_mongo_read_filter, test_mongo_read_complex,
-    test_mongo_update_single, test_mongo_update_multiple, test_mongo_update_complex
+    test_mongo_update_multiple, test_mongo_update_complex
 )
 from app.utils.plot_utils import (
     graficar_comparativa,
@@ -107,13 +107,6 @@ def main():
         sql_times = test_sql_read_complex(repeticiones=args.repeticiones)
         mongo_times = test_mongo_read_complex(repeticiones=args.repeticiones)
         graficar_comparativa(sql_times, mongo_times, "MySQL Read Complex", "MongoDB Read Complex", "Comparativa de Lectura Compleja")
-
-    elif test == "update_single":
-        if verificar_datos_mysql():
-            return
-        sql_times = test_sql_update_single(repeticiones=args.repeticiones)
-        mongo_times = test_mongo_update_single(repeticiones=args.repeticiones)
-        graficar_comparativa(sql_times, mongo_times, "MySQL Update Single", "MongoDB Update Single", "Comparativa de Actualización Simple")
 
     elif test == "update_multiple":
         if verificar_datos_mysql():

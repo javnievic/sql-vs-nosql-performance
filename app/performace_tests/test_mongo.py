@@ -143,40 +143,6 @@ def test_mongo_read_complex(repeticiones=20):
     return tiempos
 
 
-def test_mongo_update_single(repeticiones=20):
-    print("Conectando a MongoDB...")
-    
-    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
-        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
-        return
-    
-    tiempos = []
-
-    for i in range(repeticiones):
-        start = time.time()
-
-        clientes_collection.update_one(
-            {"_id": random.choice(list(clientes_collection.find()))["_id"]},
-            {"$set": {"nombre": f"Usuario Actualizado {i}"}}
-        )
-
-        productos_collection.update_one(
-            {"_id": random.choice(list(productos_collection.find()))["_id"]},
-            {"$set": {"precio": 100 + i}}
-        )
-
-        pedidos_collection.update_one(
-            {"_id": random.choice(list(pedidos_collection.find()))["_id"]},
-            {"$set": {"estado": "completado"}}
-        )
-
-        end = time.time()
-        tiempos.append(end - start)
-        print(f"Tiempo de actualización simple: {end - start:.2f} s")
-
-    return tiempos
-
-
 def test_mongo_update_multiple(repeticiones=20, numero_actualizaciones=5):
     print("Conectando a MongoDB...")
     
@@ -234,34 +200,6 @@ def test_mongo_update_complex(repeticiones=20):
         end = time.time()
         tiempos.append(end - start)
         print(f"Tiempo de actualización compleja: {end - start:.2f} s")
-
-    return tiempos
-
-
-def test_mongo_delete_simple(repeticiones=20):
-    print("Conectando a MongoDB...")
-    
-    if clientes_collection.count_documents({}) == 0 | productos_collection.count_documents({}) == 0 | pedidos_collection.count_documents({}) == 0:
-        print("MongoDB: No hay datos en la base de datos. Por favor, inserte datos primero.")
-        return
-    
-    tiempos = []
-
-    for i in range(repeticiones):
-        start = time.time()
-
-        first_cliente = clientes_collection.find_one()
-        clientes_collection.delete_one({"_id": first_cliente["_id"]})
-
-        first_producto = productos_collection.find_one()
-        productos_collection.delete_one({"_id": first_producto["_id"]})
-
-        first_pedido = pedidos_collection.find_one()
-        pedidos_collection.delete_one({"_id": first_pedido["_id"]})
-
-        end = time.time()
-        tiempos.append(end - start)
-        print(f"Tiempo de eliminación simple: {end - start:.2f} s")
 
     return tiempos
 

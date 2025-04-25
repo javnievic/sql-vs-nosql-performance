@@ -143,39 +143,6 @@ def test_sql_read_complex(repeticiones=20):
     return tiempos
 
 
-def test_sql_update_single(repeticiones=20):
-    
-    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
-        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
-        return
-
-    tiempos = []
-
-    for i in range(repeticiones):
-        start = time.time()
-
-        first_cliente = Cliente.objects.first().id
-        cliente = Cliente.objects.get(id=first_cliente + i)
-        cliente.nombre = "Cliente Actualizado"
-        cliente.save()
-
-        first_producto = Producto.objects.first().id
-        producto = Producto.objects.get(id=first_producto + i)
-        producto.precio = 100
-        producto.save()
-
-        first_pedido = Pedido.objects.first().id
-        pedido = Pedido.objects.get(id=first_pedido + i)
-        pedido.estado = "completado"
-        pedido.save()
-
-        end = time.time()
-        tiempos.append(end - start)
-        print(f"Tiempo de actualización simple: {end - start:.2f} s")
-
-    return tiempos
-
-
 def test_sql_update_multiple(repeticiones=20, numero_actualizaciones=5):
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
@@ -208,7 +175,6 @@ def test_sql_update_multiple(repeticiones=20, numero_actualizaciones=5):
 
     return tiempos
 
-
 def test_sql_update_complex(repeticiones=20):
     
     if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
@@ -229,34 +195,6 @@ def test_sql_update_complex(repeticiones=20):
         print(f"Tiempo de actualización compleja: {end - start:.2f} s")
 
     return tiempos
-
-
-def test_sql_delete_simple(repeticiones=20):
-    
-    if not Cliente.objects.exists() or not Producto.objects.exists() or not Pedido.objects.exists():
-        print("MySQL: No hay datos en la base de datos. Por favor, inserte datos primero.")
-        return
-
-    tiempos = []
-
-    for i in range(repeticiones):
-        start = time.time()
-
-        cliente = Cliente.objects.first()
-        cliente.delete()
-
-        producto = Producto.objects.first()
-        producto.delete()
-
-        pedido = Pedido.objects.first()
-        pedido.delete()
-        
-        end = time.time()
-        tiempos.append(end - start)
-        print(f"Tiempo de eliminación simple: {end - start:.2f} s")
-    
-    return tiempos
-
 
 def test_sql_delete_multiple(repeticiones=20, numero_eliminaciones=5):
     

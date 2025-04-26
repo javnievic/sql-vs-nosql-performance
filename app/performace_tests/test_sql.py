@@ -21,7 +21,7 @@ def test_sql_insert(num=10000, repeticiones=5):
             nombre=f"Usuario {i}",
             email=f"user{i}@test.com",
             fecha_registro=fecha_actual,
-            activo=True
+            activo=random.choice([True, False])
         ) for i in range(num)]
         clientes_creados = Cliente.objects.bulk_create(clientes)
 
@@ -42,7 +42,7 @@ def test_sql_insert(num=10000, repeticiones=5):
                 Pedido(
                     cliente=cliente,
                     fecha_pedido=fecha_actual,
-                    estado="pendiente"
+                    estado=random.choice(["pendiente", "completado"])
                 ) for cliente in clientes_creados
             ]
         pedidos_creados = Pedido.objects.bulk_create(pedidos)

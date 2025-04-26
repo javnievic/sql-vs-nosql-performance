@@ -191,7 +191,7 @@ def test_sql_update_complex(repeticiones=20):
     for i in range(repeticiones):
         start = time.time()
 
-        productos_menos_20 = Producto.objects.filter(precio__lt=20).update(
+        productos_menos_20 = Producto.objects.filter(inventario__lt=20).update(
             precio= 10 * i
         )
 

@@ -69,31 +69,30 @@ Este script creará automáticamente la base de datos `mysql_db` y el usuario `m
 3. Aplica las migraciones a la base de datos:  
    python manage.py migrate
 
-## Ejecutar la Comparativa (SQL vs NoSQL)
-Para realizar la comparativa completa de inserciones y visualizar los resultados en una gráfica:
-   ```bash
-   python manage.py runscript run_comparativa_insert
-   ```
-## Probar la Inserción en MySQL (en el entorno virtual)
+## Ejecutar los Test de Comparación (Python)
+Para ejecutar diferentes pruebas de rendimiento en SQL y MongoDB con parámetros específicos, puedes usar el siguiente comando:
+```bash
+python main.py --test <tipo_de_test> --num <número_de_registros> --repeticiones <número_de_repeticiones>
+```
+### Opciones de --test:
+- `insert`: Prueba de inserción — parámetros: `--num`, `--repeticiones`
+- `read_simple`: Prueba de lectura simple — parámetros: `--repeticiones`
+- `read_filter`: Prueba de lectura con filtros — parámetros: `--repeticiones`
+- `read_complex`: Prueba de lectura compleja — parámetros: `--repeticiones`
+- `update_single`: Prueba de actualización simple — parámetros: `--repeticiones`
+- `update_multiple`: Prueba de actualización múltiple — parámetros: `--num`, `--repeticiones`
+- `update_complex`: Prueba de actualización compleja — parámetros: `--repeticiones`
+- `delete_multiple`: Prueba de eliminación múltiple — parámetros: `--num`, `--repeticiones`
+- `delete_all`: Prueba de eliminación total — parámetros: `--repeticiones`
 
-1. Ejecuta la shell de Django:
-   ```bash
-   python manage.py shell
+#### Parámetros:
+`--num`: Número de registros (para insert, delete_multiple, y update_multiple).
+`--repeticiones`: Número de repeticiones para las pruebas.
 
-2. Dentro de la shell, importa la función de prueba de SQL y ejecútala:
-   ```bash
-   from app.performace_tests.test_sql import test_sql_insert
-   test_sql_insert()
-   ```
-
-   Esto ejecutará las pruebas de inserción en MySQL y mostrará los tiempos de inserción.
-
-## Probar la Inserción en MongoDB
-
-1. Asegúrate de que MongoDB esté corriendo (`mongod`).
-2. Ejecuta el script de prueba para MongoDB para medir el tiempo de inserción en la base de datos NoSQL:
-   ```bash
-   python app/performace_tests/test_mongo.py
+### Ejemplo:
+```bash
+python main.py --test insert --num 1000 --repeticiones 10
+```
 
 ## Notas
 

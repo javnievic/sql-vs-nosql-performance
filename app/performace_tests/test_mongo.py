@@ -194,7 +194,7 @@ def test_mongo_update_complex(repeticiones=20):
         start = time.time()
 
         productos_collection.update_many(
-            {"inventario": {"$lt": 20}},
+            {"inventario": {"$lt": 20 * (i+1)}},
             {"$set": {"precio": 10 * i}}
         )
 

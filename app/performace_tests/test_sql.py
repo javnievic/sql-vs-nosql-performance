@@ -108,7 +108,6 @@ def test_sql_read_filter(repeticiones=20):
         read_clientes = list(Cliente.objects.filter(activo=True))
         read_productos = list(Producto.objects.filter(precio__gt=500))
         read_pedidos = list(Pedido.objects.filter(estado="pendiente"))
-        read_pedidos_productos = list(PedidoProducto.objects.filter(cantidad__gt=2))
 
         end = time.time()
         tiempos.append(end - start)

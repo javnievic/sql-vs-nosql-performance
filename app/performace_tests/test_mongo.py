@@ -36,7 +36,7 @@ def test_mongo_insert(num=10000, repeticiones=5):
             "nombre": f"Producto {i}",
             "descripcion": f"Descripción {i}",
             "precio": random.uniform(10, 1000),
-            "categoria": "Categoria A",
+            "categoria": random.choice(["Categoria A", "Categoria B", "Categoria C"]),
             "inventario": random.randint(1, 100),
             "imagen": "http://example.com/product.jpg"
         } for i in range(num)]
@@ -194,7 +194,7 @@ def test_mongo_update_complex(repeticiones=20):
         start = time.time()
 
         productos_collection.update_many(
-            {"inventario": {"$lt": 20 * (i+1)}},
+            {"inventario": {"$lt": 50}},
             {"$set": {"precio": 10 * i}}
         )
 

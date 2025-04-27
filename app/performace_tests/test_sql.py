@@ -30,7 +30,7 @@ def test_sql_insert(num=10000, repeticiones=5):
             nombre=f"Producto {i}",
             descripcion=f"Descripción {i}",
             precio=random.uniform(10, 1000),
-            categoria="Categoria A",
+            categoria=random.choice(["Categoria A", "Categoria B", "Categoria C"]),
             inventario=random.randint(1, 100),
             imagen="http://example.com/product.jpg"
         ) for i in range(num)]
@@ -191,7 +191,7 @@ def test_sql_update_complex(repeticiones=20):
     for i in range(repeticiones):
         start = time.time()
 
-        productos_menos_20 = Producto.objects.filter(inventario__lt=20 * (i+1)).update(
+        productos_menos_50 = Producto.objects.filter(inventario__lt=50).update(
             precio= 10 * i
         )
 

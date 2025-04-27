@@ -27,7 +27,7 @@ def test_mongo_insert(num=10000, repeticiones=5):
             "nombre": f"Usuario {i}",
             "email": f"user{i}@test.com",
             "fecha_registro": "2025-04-22",
-            "activo": True
+            "activo": random.choice([True, False])
         } for i in range(num)]
         clientes_collection.insert_many(clientes_docs)
 
@@ -36,7 +36,7 @@ def test_mongo_insert(num=10000, repeticiones=5):
             "nombre": f"Producto {i}",
             "descripcion": f"Descripción {i}",
             "precio": random.uniform(10, 1000),
-            "categoria": "Categoria A",
+            "categoria": random.choice(["Categoria A", "Categoria B", "Categoria C"]),
             "inventario": random.randint(1, 100),
             "imagen": "http://example.com/product.jpg"
         } for i in range(num)]
@@ -47,7 +47,7 @@ def test_mongo_insert(num=10000, repeticiones=5):
             pedido = {
                 "cliente_id": cliente["_id"],
                 "fecha_pedido": "2025-04-22",
-                "estado": "pendiente",
+                "estado": random.choice(["pendiente", "completado"]),
                 "productos": [{
                     "producto_id": random.choice(productos_docs)["_id"],
                     "cantidad": random.randint(1, 5),
@@ -194,7 +194,7 @@ def test_mongo_update_complex(repeticiones=20):
         start = time.time()
 
         productos_collection.update_many(
-            {"inventario": {"$lt": 20}},
+            {"inventario": {"$lt": 50}},
             {"$set": {"precio": 10 * i}}
         )
 

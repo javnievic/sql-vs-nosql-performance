@@ -21,7 +21,7 @@ def test_sql_insert(num=10000, repeticiones=5):
             nombre=f"Usuario {i}",
             email=f"user{i}@test.com",
             fecha_registro=fecha_actual,
-            activo=True
+            activo=random.choice([True, False])
         ) for i in range(num)]
         clientes_creados = Cliente.objects.bulk_create(clientes)
 
@@ -30,7 +30,7 @@ def test_sql_insert(num=10000, repeticiones=5):
             nombre=f"Producto {i}",
             descripcion=f"Descripción {i}",
             precio=random.uniform(10, 1000),
-            categoria="Categoria A",
+            categoria=random.choice(["Categoria A", "Categoria B", "Categoria C"]),
             inventario=random.randint(1, 100),
             imagen="http://example.com/product.jpg"
         ) for i in range(num)]
@@ -42,7 +42,7 @@ def test_sql_insert(num=10000, repeticiones=5):
                 Pedido(
                     cliente=cliente,
                     fecha_pedido=fecha_actual,
-                    estado="pendiente"
+                    estado=random.choice(["pendiente", "completado"])
                 ) for cliente in clientes_creados
             ]
         pedidos_creados = Pedido.objects.bulk_create(pedidos)
@@ -108,7 +108,6 @@ def test_sql_read_filter(repeticiones=20):
         read_clientes = list(Cliente.objects.filter(activo=True))
         read_productos = list(Producto.objects.filter(precio__gt=500))
         read_pedidos = list(Pedido.objects.filter(estado="pendiente"))
-        read_pedidos_productos = list(PedidoProducto.objects.filter(cantidad__gt=2))
 
         end = time.time()
         tiempos.append(end - start)
@@ -192,7 +191,7 @@ def test_sql_update_complex(repeticiones=20):
     for i in range(repeticiones):
         start = time.time()
 
-        productos_menos_20 = Producto.objects.filter(precio__lt=20).update(
+        productos_menos_50 = Producto.objects.filter(inventario__lt=50).update(
             precio= 10 * i
         )
 

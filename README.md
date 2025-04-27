@@ -1,8 +1,8 @@
 # Proyecto de Comparación de Bases de Datos (SQL vs NoSQL)
 
-Este proyecto compara el rendimiento de inserciones en bases de datos SQL (MySQL) y NoSQL (MongoDB).
+Este proyecto tiene como objetivo comparar el rendimiento de las bases de datos MySQL y MongoDB para diversas operaciones como inserciones, lecturas, actualizaciones y eliminaciones. A través de pruebas de rendimiento y gráficas, el proyecto facilita la comparación del rendimiento entre ambas bases de datos.
 
-## Requisitos
+## Requisitos previos
 
 Para ejecutar este proyecto, necesitarás tener instaladas las siguientes dependencias:
 
